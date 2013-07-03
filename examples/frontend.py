@@ -25,7 +25,7 @@ Authors:
 #-----------------------------------------------------------------------------
 
 import logging
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO)
 
 from zmq.eventloop import ioloop
 ioloop.install()
@@ -42,7 +42,7 @@ proxy.bind('tcp://127.0.0.1:5555')
 application = web.Application(
     # We use a timeout of 2000ms, after which a status of 504 is returned.
     # All URLs beginning with /foo will be handled by the backend.
-    [(r"/foo\S*", ZMQRequestHandlerProxy, {'proxy':proxy,'timeout':2000})]
+    [(r"/foo\S*", ZMQRequestHandlerProxy, {'proxy': proxy, 'timeout': 10000})]
 )
 
 logging.info("Starting frontend HTTP server")

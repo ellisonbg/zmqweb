@@ -21,13 +21,13 @@ To run this example:
 #-----------------------------------------------------------------------------
 
 import logging
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO)
 import time
 
-from zmq.eventloop import ioloop
-ioloop.install()
-from tornado import web
 
+
+from tornado import web
+from tornado import process
 from zmqweb import ZMQApplication
 
 class FooHandler(web.RequestHandler):
@@ -39,9 +39,17 @@ class FooHandler(web.RequestHandler):
 class SleepHandler(web.RequestHandler):
 
     def get(self):
-        t = float(self.get_argument('t',1.0))
+        t = float(self.get_argument('t', 1.0))
         time.sleep(t)
-        self.finish({'status':'awake','t':t})
+        self.finish({'status': 'awake', 't': t})
+
+
+logging.info("forking...")
+
+process.fork_processes(0)
+
+from zmq.eventloop import ioloop
+ioloop.install()
 
 application = ZMQApplication(
     [
@@ -52,7 +60,6 @@ application = ZMQApplication(
         (r"/foo/sleep", SleepHandler)
     ],
 )
-
 # Connect to the frontend on port 5555.
 application.connect('tcp://127.0.0.1:5555')
 ioloop.IOLoop.instance().start()
