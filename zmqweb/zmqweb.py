@@ -34,7 +34,7 @@ from tornado import httputil
 from tornado import web
 from tornado import stack_context
 from tornado.escape import native_str
-from tornado.util import b
+from six import b
 
 import zmq
 from zmq.eventloop.zmqstream import ZMQStream
