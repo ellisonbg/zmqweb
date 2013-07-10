@@ -5,7 +5,7 @@ setup(
     version = "0.1",
     packages = find_packages(),
 
-    install_requires = ['tornado','pyzmq'],
+    install_requires = ['tornado','pyzmq', 'six'],
 
     author = "Brian Granger",
     author_email = "ellisonbg@gmail.com",
